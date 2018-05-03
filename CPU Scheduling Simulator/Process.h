@@ -18,12 +18,15 @@ struct node
 
 enum GetProcessTypeEnum { ArrivalTime, Priority } typedef GetProcessType;
 
-
 Node* ReadyQueue;
 
 void InsertProcess(Node** head, Process* process);
-void DebugNode(Node* head);
 void DeleteProcess(Node** head, Process* process);
-Process* GetProcess(Process* list, GetProcessType type);
-Process* GetProcessByArrivalTime(Process* list);
-Process* GetProcessByPriority(Process* list);
+int GetNodeLength(Node* head);
+
+void DebugNode(Node* head);
+void DebugProcess(Process* process);
+
+Process* GetProcess(Node* head, GetProcessType type);
+Process* GetProcessByArrivalTime(Node* head, int time);
+Process* GetProcessByPriority(Node* head, int priority);

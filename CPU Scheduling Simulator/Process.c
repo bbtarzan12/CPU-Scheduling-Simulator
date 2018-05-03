@@ -26,17 +26,31 @@ void DebugNode(Node* head)
 {
 	Node* Temp = head;
 
-	printf("<Debug> ");
+	printf("┌────┬─────────────┬────────────────┬────────────────┬───────────┐\n");
+	printf("│ I D│  Arival Time│  CPU Burst Time│  I/O Burst Time│  Priority │\n");
+	printf("├────┼─────────────┼────────────────┼────────────────┼───────────┤\n");
 	while (Temp != NULL)
 	{
-		if (Temp->Process == NULL)
+		Process* process = Temp->Process;
+		if (process == NULL)
 		{
 			PrintError("Process is NULL");
 		}
-		printf("%d > ", Temp->Process->ID);
+		printf("│%4d│\t%11d│\t%12d│\t%13d│\t%8d │\n", process->ID, process->ArrivalTime, process->CPUBurstTime, process->IOBurstTime, process->Priority);
 		Temp = Temp->Next;
+		if(Temp != NULL)
+			printf("├────┼─────────────┼────────────────┼────────────────┼───────────┤\n");
 	}
-	printf("End\n");
+	printf("└────┴─────────────┴────────────────┴────────────────┴───────────┘\n");
+}
+
+void DebugProcess(Process* process)
+{
+	printf("┌────┬─────────────┬────────────────┬────────────────┬───────────┐\n");
+	printf("│ I D│  Arival Time│  CPU Burst Time│  I/O Burst Time│  Priority │\n");
+	printf("├────┼─────────────┼────────────────┼────────────────┼───────────┤\n");
+	printf("│%4d│\t%11d│\t%12d│\t%13d│\t%8d │\n", process->ID, process->ArrivalTime, process->CPUBurstTime, process->IOBurstTime, process->Priority);
+	printf("└────┴─────────────┴────────────────┴────────────────┴───────────┘\n");
 }
 
 void DeleteProcess(Node** head, Process* process)
@@ -74,9 +88,17 @@ void DeleteProcess(Node** head, Process* process)
 	PrintWarning("Can not find the process");
 }
 
-Process * GetProcess(Process* list, GetProcessType type)
+int GetNodeLength(Node* head)
 {
-	Process* (*Func) (Process*);
+	if (head == NULL)
+		return 0;
+
+	return 1 + GetNodeLength(head->Next);
+}
+
+Process* GetProcess(Node* head, GetProcessType type)
+{
+	Process* (*Func) (Node*, int);
 	switch (type)
 	{
 		case ArrivalTime:
@@ -88,16 +110,38 @@ Process * GetProcess(Process* list, GetProcessType type)
 		default:
 			break;
 	}
-	return Func(list);
+	return Func(head, -1);
 }
 
-Process* GetProcessByArrivalTime(Process* list)
+Process* GetProcessByArrivalTime(Node* head, int time)
 {
-	return NULL;
+	if (head == NULL)
+	{
+		if (time == -1)
+			return NULL;
+		else
+			return head->Process;
+	}
+
+	if (time == -1 || head->Process->ArrivalTime < time)
+		time = head->Process->ArrivalTime;
+
+	return GetProcessByArrivalTime(head->Next, time);
 }
 
-Process* GetProcessByPriority(Process* list)
+Process* GetProcessByPriority(Node* head, int priority)
 {
-	return NULL;
+	if (head == NULL)
+	{
+		if (priority == -1)
+			return NULL;
+		else
+			return head->Process;
+	}
+
+	if (priority == -1 || head->Process->Priority < priority)
+		priority = head->Process->Priority;
+
+	return GetProcessByArrivalTime(head->Next, priority);
 }
 

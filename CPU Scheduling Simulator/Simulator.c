@@ -13,7 +13,6 @@ void main(int argc)
 
 void Init(int size)
 {
-	Size = size;
 	CreateProcess(size);
 }
 
@@ -49,7 +48,6 @@ void CreateProcess(int size)
 		InsertProcess(&ReadyQueue, process);
 		randID += rand() % 30 + 1;
 	}
-	DebugNode(ReadyQueue);
 }
 
 void FCFSSchedule()
