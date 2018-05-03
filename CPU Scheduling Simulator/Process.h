@@ -16,9 +16,7 @@ struct node
 	struct node *Next;
 } typedef Node;
 
-enum GetProcessTypeEnum { ArrivalTime, Priority } typedef GetProcessType;
-
-Node* ReadyQueue;
+enum GetProcessTypeEnum { ARRIVALTIME, PRIORITY } typedef GetProcessType;
 
 void InsertProcess(Node** head, Process* process);
 void DeleteProcess(Node** head, Process* process);
@@ -28,5 +26,5 @@ void DebugNode(Node* head);
 void DebugProcess(Process* process);
 
 Process* GetProcess(Node* head, GetProcessType type);
-Process* GetProcessByArrivalTime(Node* head, int time);
-Process* GetProcessByPriority(Node* head, int priority);
+Process* GetProcessByArrivalTime(Node* head, Process* process);
+Process* GetProcessByPriority(Node* head, Process* process);

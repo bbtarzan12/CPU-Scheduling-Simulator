@@ -7,3 +7,7 @@ void CreateProcess(int size);
 void Schedule();
 void FCFSSchedule();
 void Evaluation();
+
+Node* ReadyQueue;
+Node* RunQueue;
+Node* WaitingQueue;

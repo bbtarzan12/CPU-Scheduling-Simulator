@@ -25,10 +25,9 @@ void InsertProcess(Node** head, Process* process)
 void DebugNode(Node* head)
 {
 	Node* Temp = head;
-
-	printf("â”Œâ”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”\n");
-	printf("â”‚ I Dâ”‚  Arival Timeâ”‚  CPU Burst Timeâ”‚  I/O Burst Timeâ”‚  Priority â”‚\n");
-	printf("â”œâ”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤\n");
+	printf("¦£¦¡¦¡¦¡¦¡¦¨¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¨¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¨¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¨¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¤\n");
+	printf("¦¢ I D¦¢  Arival Time¦¢  CPU Burst Time¦¢  I/O Burst Time¦¢  Priority ¦¢\n");
+	printf("¦§¦¡¦¡¦¡¦¡¦«¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦«¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦«¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦«¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦©\n");
 	while (Temp != NULL)
 	{
 		Process* process = Temp->Process;
@@ -36,21 +35,21 @@ void DebugNode(Node* head)
 		{
 			PrintError("Process is NULL");
 		}
-		printf("â”‚%4dâ”‚\t%11dâ”‚\t%12dâ”‚\t%13dâ”‚\t%8d â”‚\n", process->ID, process->ArrivalTime, process->CPUBurstTime, process->IOBurstTime, process->Priority);
+		printf("¦¢%4d¦¢\t%11d¦¢\t%12d¦¢\t%13d¦¢\t%8d ¦¢\n", process->ID, process->ArrivalTime, process->CPUBurstTime, process->IOBurstTime, process->Priority);
 		Temp = Temp->Next;
 		if(Temp != NULL)
-			printf("â”œâ”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤\n");
+			printf("¦§¦¡¦¡¦¡¦¡¦«¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦«¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦«¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦«¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦©\n");
 	}
-	printf("â””â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜\n");
+	printf("¦¦¦¡¦¡¦¡¦¡¦ª¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦ª¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦ª¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦ª¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¥\n");
 }
 
 void DebugProcess(Process* process)
 {
-	printf("â”Œâ”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”\n");
-	printf("â”‚ I Dâ”‚  Arival Timeâ”‚  CPU Burst Timeâ”‚  I/O Burst Timeâ”‚  Priority â”‚\n");
-	printf("â”œâ”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤\n");
-	printf("â”‚%4dâ”‚\t%11dâ”‚\t%12dâ”‚\t%13dâ”‚\t%8d â”‚\n", process->ID, process->ArrivalTime, process->CPUBurstTime, process->IOBurstTime, process->Priority);
-	printf("â””â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜\n");
+	printf("¦£¦¡¦¡¦¡¦¡¦¨¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¨¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¨¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¨¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¤\n");
+	printf("¦¢ I D¦¢  Arival Time¦¢  CPU Burst Time¦¢  I/O Burst Time¦¢  Priority ¦¢\n");
+	printf("¦§¦¡¦¡¦¡¦¡¦«¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦«¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦«¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦«¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦©\n");
+	printf("¦¢%4d¦¢\t%11d¦¢\t%12d¦¢\t%13d¦¢\t%8d ¦¢\n", process->ID, process->ArrivalTime, process->CPUBurstTime, process->IOBurstTime, process->Priority);
+	printf("¦¦¦¡¦¡¦¡¦¡¦ª¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦ª¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦ª¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦ª¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¥\n");
 }
 
 void DeleteProcess(Node** head, Process* process)
@@ -98,50 +97,53 @@ int GetNodeLength(Node* head)
 
 Process* GetProcess(Node* head, GetProcessType type)
 {
-	Process* (*Func) (Node*, int);
+	Process* (*Func) (Node*, Process*);
 	switch (type)
 	{
-		case ArrivalTime:
+		case ARRIVALTIME:
 			Func = GetProcessByArrivalTime;
 			break;
-		case Priority:
+		case PRIORITY:
 			Func = GetProcessByPriority;
 			break;
 		default:
-			break;
+			PrintError("Invalid GetProcessType");
+			return NULL;
 	}
-	return Func(head, -1);
+	return Func(head, NULL);
 }
 
-Process* GetProcessByArrivalTime(Node* head, int time)
+Process* GetProcessByArrivalTime(Node* head, Process* process)
 {
 	if (head == NULL)
 	{
-		if (time == -1)
+		if (process == NULL)
 			return NULL;
 		else
-			return head->Process;
+			return process;
 	}
 
-	if (time == -1 || head->Process->ArrivalTime < time)
-		time = head->Process->ArrivalTime;
-
-	return GetProcessByArrivalTime(head->Next, time);
+	if (process == NULL || head->Process->ArrivalTime < process->ArrivalTime)
+		process = head->Process;
+	if (head->Process->ArrivalTime == process->ArrivalTime)
+		process = head->Process->ID < process->ID ? head->Process : process;
+	return GetProcessByArrivalTime(head->Next, process);
 }
 
-Process* GetProcessByPriority(Node* head, int priority)
+Process* GetProcessByPriority(Node* head, Process* process)
 {
 	if (head == NULL)
 	{
-		if (priority == -1)
+		if (process == NULL)
 			return NULL;
 		else
-			return head->Process;
+			return process;
 	}
-
-	if (priority == -1 || head->Process->Priority < priority)
-		priority = head->Process->Priority;
-
-	return GetProcessByArrivalTime(head->Next, priority);
+	if (process == NULL || head->Process->Priority < process->Priority)
+		process = head->Process;
+	if (head->Process->ArrivalTime == process->ArrivalTime)
+		process = head->Process->ID < process->ID ? head->Process : process;
+	
+	return GetProcessByPriority(head->Next, process);
 }
 
