@@ -14,7 +14,6 @@ void main(int argc)
 void Init(int size)
 {
 	Size = size;
-	ProcessList = (Process*)malloc(sizeof(Process) * size);
 	CreateProcess(size);
 }
 
@@ -41,28 +40,21 @@ void CreateProcess(int size)
 
 	for (int i = 0; i < size; i++)
 	{
-		Process process;
-		process.ID = randID;
-		process.CPUBurstTime = rand() % 20 + 1;
-		process.IOBurstTime = rand() % 20 + 1;
-		process.ArrivalTime = rand() % 20 + 1;
-		process.Priority = numbers[i];
-		ProcessList[i] = process;
+		Process* process = (Process*)malloc(sizeof(Process));
+		process->ID = randID;
+		process->CPUBurstTime = rand() % 20 + 1;
+		process->IOBurstTime = rand() % 20 + 1;
+		process->ArrivalTime = rand() % 20 + 1;
+		process->Priority = numbers[i];
+		InsertProcess(&ReadyQueue, process);
 		randID += rand() % 30 + 1;
 	}
-}
-
-Process* CreateTempList()
-{
-	Process* list = (Process*)malloc(sizeof(Process) * Size);
-	memcpy(list, ProcessList, sizeof(Process) * Size);
-	return list;
+	DebugNode(ReadyQueue);
 }
 
 void FCFSSchedule()
 {
-	Process* list = CreateTempList();
-	while (1)
+	while (TRUE)
 	{
 
 	}

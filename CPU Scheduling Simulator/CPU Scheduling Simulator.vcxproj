@@ -19,9 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Helper.c" />
+    <ClCompile Include="Process.c" />
     <ClCompile Include="Simulator.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Helper.h" />
+    <ClInclude Include="Process.h" />
     <ClInclude Include="Simulator.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

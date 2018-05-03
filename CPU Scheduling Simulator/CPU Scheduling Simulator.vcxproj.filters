@@ -18,9 +18,21 @@
     <ClCompile Include="Simulator.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Process.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Helper.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Simulator.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Process.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Helper.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
