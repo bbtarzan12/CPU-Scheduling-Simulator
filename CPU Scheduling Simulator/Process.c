@@ -24,16 +24,22 @@ void InsertProcess(Node** head, ProcessPtr process)
 void DrawGanttChart(Node* head)
 {
 	Node* temp = head;
-	ProcessPtr prev = NULL;
+	ProcessPtr prev = -1;
 	int time = 0;
 
-	printf("忙式式式式式式式式忖 0\n");
-	printf("弛  IDLE  弛\n");
 	while (temp != NULL)
 	{
 		if (temp->Process != prev)
 		{
-			printf("戍式式式式式式式式扣 %d\n", time);
+			if (prev == -1)
+			{
+				printf("忙式式式式式式式式忖 0\n");
+			}
+			else
+			{
+				printf("戍式式式式式式式式扣 %d\n", time);
+			}
+
 			if (temp->Process == NULL)
 			{
 				printf("弛  IDLE  弛\n");
