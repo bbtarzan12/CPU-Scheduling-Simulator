@@ -4,20 +4,21 @@ enum AlgorithmTypeEnum { FCFS, N_SJF, P_SJF, N_Prirority, P_Priority, RR } typed
 
 void Init(int size);
 void CreateProcess(int size);
+NodePtr Update(AlgorithmType type, int preemptive, int timeQuantum);
 ProcessPtr Schedule(AlgorithmType type, int preemptive, int timeQuantum);
 ProcessPtr Simulate(int time, AlgorithmType type, int preemptive, int timeQuantum );
-void Evaluation();
+void Evaluation(Node* Terminated);
 
-void WaitAllProcess(Node* head);
-void PerformIOOperation(Node* head);
+void WaitAllProcess(NodePtr head);
+void PerformIOOperation(NodePtr head);
 ProcessPtr ExecuteRunningProcess();
 
 ProcessPtr FCFSAlgorithm();
 
-Node* JobQueue;
-Node* ReadyQueue;
+NodePtr JobQueue;
+NodePtr ReadyQueue;
 ProcessPtr RunningProcess;
-Node* WaitingQueue;
-Node* TerminatedQueue;
+NodePtr WaitingQueue;
+NodePtr TerminatedQueue;
 
 int SimulateTime = -1;

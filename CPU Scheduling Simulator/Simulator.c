@@ -8,18 +8,9 @@ void main(int argc)
 		scanf("%d", &argc);
 	}
 	Init(argc);
-	DebugNode(JobQueue);
-	int time = 0;
-	Node* GanttNode = NULL;
-	while (TRUE)
-	{
-		if (JobQueue == NULL && ReadyQueue == NULL && WaitingQueue == NULL && RunningProcess == NULL)
-			break;
-		ProcessPtr process = Simulate(time, FCFS, 0, 0);
-		InsertProcess(&GanttNode, process);
-		time++;
-	}
-	DrawGanttChart(GanttNode);
+	NodePtr GanttChart = Update(FCFS, 0, 0);
+	DrawGanttChart(GanttChart);
+	DrawNodeInformation(TerminatedQueue);
 }
 
 void Init(int size)
@@ -53,7 +44,6 @@ void CreateProcess(int size)
 		ProcessPtr process = (ProcessPtr)malloc(sizeof(Process));
 		process->ID = randID;
 		process->CPUBurstTime = rand() % 20 + 1;
-		process->IOBurstTime = rand() % 20 + 1;
 		process->ArrivalTime = rand() % 20 + 1;
 		process->Priority = numbers[i];
 		process->CPURemaningTime = process->CPUBurstTime;
@@ -63,6 +53,22 @@ void CreateProcess(int size)
 		InsertProcess(&JobQueue, process);
 		randID += rand() % 30 + 1;
 	}
+}
+
+NodePtr Update(AlgorithmType type, int preemptive, int timeQuantum)
+{
+	DebugNode(JobQueue);
+	int time = 0;
+	NodePtr GanttNode = NULL;
+	while (TRUE)
+	{
+		if (JobQueue == NULL && ReadyQueue == NULL && WaitingQueue == NULL && RunningProcess == NULL)
+			break;
+		ProcessPtr process = Simulate(time, type, preemptive, timeQuantum);
+		InsertProcess(&GanttNode, process);
+		time++;
+	}
+	return GanttNode;
 }
 
 ProcessPtr Schedule(AlgorithmType type, int preemptive, int timeQuantum)
@@ -124,7 +130,7 @@ ProcessPtr FCFSAlgorithm()
 	}
 }
 
-void WaitAllProcess(Node* head)
+void WaitAllProcess(NodePtr head)
 {
 	if (head == NULL)
 		return;
@@ -136,7 +142,7 @@ void WaitAllProcess(Node* head)
 	WaitAllProcess(head->Next);
 }
 
-void PerformIOOperation(Node* head)
+void PerformIOOperation(NodePtr head)
 {
 	if (head == NULL)
 		return;
@@ -164,7 +170,7 @@ ProcessPtr ExecuteRunningProcess()
 	RunningProcess->CPURemaningTime--;
 	RunningProcess->TurnaroundTime++;
 
-	if (rand() % 5 == 0)
+	if (RANDOM_IO && rand() % 5 == 0)
 	{
 		RunningProcess->IORemaningTime += rand() % 10;
 	}

@@ -4,7 +4,6 @@ struct process
 {
 	int ID;
 	int CPUBurstTime;
-	int IOBurstTime;
 	int ArrivalTime;
 	int Priority;
 	int CPURemaningTime;
@@ -21,17 +20,20 @@ struct node
 	struct node *Next;
 } typedef Node;
 
+typedef Node* NodePtr;
+
 enum GetProcessTypeEnum { ARRIVALTIME, PRIORITY } typedef GetProcessType;
 
-void InsertProcess(Node** head, ProcessPtr process);
-void DeleteProcess(Node** head, ProcessPtr process);
-void MoveProcess(Node** from, Node** to, ProcessPtr process);
-int GetNodeLength(Node* head);
+void InsertProcess(NodePtr* head, ProcessPtr process);
+void DeleteProcess(NodePtr* head, ProcessPtr process);
+void MoveProcess(NodePtr* from, NodePtr* to, ProcessPtr process);
+int GetNodeLength(NodePtr head);
 
-void DrawGanttChart(Node* head);
-void DebugNode(Node* head);
+void DrawGanttChart(NodePtr head);
+void DrawNodeInformation(NodePtr head);
+void DebugNode(NodePtr head);
 void DebugProcess(ProcessPtr process);
 
-ProcessPtr GetProcess(Node* head, GetProcessType type, int time);
-ProcessPtr GetProcessByArrivalTime(Node* head, ProcessPtr process, int time);
-ProcessPtr GetProcessByPriority(Node* head, ProcessPtr process, int time);
+ProcessPtr GetProcess(NodePtr head, GetProcessType type, int time);
+ProcessPtr GetProcessByArrivalTime(NodePtr head, ProcessPtr process, int time);
+ProcessPtr GetProcessByPriority(NodePtr head, ProcessPtr process, int time);

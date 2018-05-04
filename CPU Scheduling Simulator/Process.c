@@ -1,9 +1,9 @@
 #include "Process.h"
 
-void InsertProcess(Node** head, ProcessPtr process)
+void InsertProcess(NodePtr* head, ProcessPtr process)
 {
-	Node* NewNode = (Node*)malloc(sizeof(Node));
-	Node* Temp = *head;
+	NodePtr NewNode = (NodePtr)malloc(sizeof(Node));
+	NodePtr Temp = *head;
 	
 	NewNode->Process = process;
 	NewNode->Next = NULL;
@@ -21,9 +21,9 @@ void InsertProcess(Node** head, ProcessPtr process)
 	Temp->Next = NewNode;
 }
 
-void DrawGanttChart(Node* head)
+void DrawGanttChart(NodePtr head)
 {
-	Node* temp = head;
+	NodePtr temp = head;
 	ProcessPtr prev = -1;
 	int time = 0;
 
@@ -60,12 +60,15 @@ void DrawGanttChart(Node* head)
 	printf("戌式式式式式式式式戎 %d\n", time);
 }
 
-void DebugNode(Node* head)
+void DrawNodeInformation(NodePtr head)
 {
-	Node* Temp = head;
-	printf("忙式式式式成式式式式式式式式式式式式式成式式式式式式式式式式式式式式式式成式式式式式式式式式式式式式式式式成式式式式式式式式式式式忖\n");
-	printf("弛 I D弛  Arival Time弛  CPU Burst Time弛  I/O Burst Time弛  Priority 弛\n");
-	printf("戍式式式式托式式式式式式式式式式式式式托式式式式式式式式式式式式式式式式托式式式式式式式式式式式式式式式式托式式式式式式式式式式式扣\n");
+	NodePtr Temp = head;
+	int count = 0;
+	float AverageWaitingTime = 0;
+	float AverageTurnaroundTime = 0;
+	printf("忙式式式式式成式式式式式式式式式式式式式式成式式式式式式式式式式式式式式式式式忖\n");
+	printf("弛 I D 弛 Waiting Time 弛 Trunaround Time 弛\n");
+	printf("戍式式式式式托式式式式式式式式式式式式式式托式式式式式式式式式式式式式式式式式扣\n");
 	while (Temp != NULL)
 	{
 		ProcessPtr process = Temp->Process;
@@ -75,29 +78,64 @@ void DebugNode(Node* head)
 			Temp = Temp->Next;
 			continue;
 		}
-		printf("弛%4d弛\t%11d弛\t%12d弛\t%13d弛\t%8d 弛\n", process->ID, process->ArrivalTime, process->CPUBurstTime, process->IOBurstTime, process->Priority);
+		AverageWaitingTime += process->WaitingTime;
+		AverageTurnaroundTime += process->TurnaroundTime;
+		count++;
+		printf("弛%5d弛%14d弛%17d弛\n", process->ID, process->WaitingTime, process->TurnaroundTime);
+		Temp = Temp->Next;
+		if (Temp != NULL)
+			printf("戍式式式式式托式式式式式式式式式式式式式式扣式式式式式式式式式式式式式式式式式扣\n");
+	}
+	printf("戌式式式式式扛式式式式式式式式式式式式式式扛式式式式式式式式式式式式式式式式式戎\n");
+
+	AverageWaitingTime = AverageWaitingTime / count;
+	AverageTurnaroundTime = AverageTurnaroundTime / count;
+
+	printf("忙式式式式式式式式式式式式式式式式式式式式式式成式式式式式式式式式式式式式式式式式式式式式式式式式忖\n");
+	printf("弛 Average Waiting Time 弛 Average Trunaround Time 弛\n");
+	printf("戍式式式式式式式式式式式式式式式式式式式式式式托式式式式式式式式式式式式式式式式式式式式式式式式式扣\n");
+	printf("弛%22.1f弛%25.1f弛\n", AverageWaitingTime, AverageTurnaroundTime);
+	printf("戌式式式式式式式式式式式式式式式式式式式式式式扛式式式式式式式式式式式式式式式式式式式式式式式式式戎\n");
+}
+
+void DebugNode(NodePtr head)
+{
+	NodePtr Temp = head;
+	printf("忙式式式式式成式式式式式式式式式式式式式成式式式式式式式式式式式式式式式式成式式式式式式式式式式成式式式式式式式式式式式式式式成式式式式式式式式式式式式式式式式式忖\n");
+	printf("弛 I D 弛 Arival Time 弛 CPU Burst Time 弛 Priority 弛 Waiting Time 弛 Trunaround Time 弛\n");
+	printf("戍式式式式式托式式式式式式式式式式式式式托式式式式式式式式式式式式式式式式托式式式式式式式式式式托式式式式式式式式式式式式式式扣式式式式式式式式式式式式式式式式式扣\n");
+	while (Temp != NULL)
+	{
+		ProcessPtr process = Temp->Process;
+		if (process == NULL)
+		{
+			//PrintError("Process is NULL");
+			Temp = Temp->Next;
+			continue;
+		}
+		printf("弛%5d弛%13d弛%16d弛%10d弛%14d弛%17d弛\n", process->ID, process->ArrivalTime, process->CPUBurstTime, process->Priority, process->WaitingTime, process->TurnaroundTime);
 		Temp = Temp->Next;
 		if(Temp != NULL)
-			printf("戍式式式式托式式式式式式式式式式式式式托式式式式式式式式式式式式式式式式托式式式式式式式式式式式式式式式式托式式式式式式式式式式式扣\n");
+			printf("戍式式式式式托式式式式式式式式式式式式式托式式式式式式式式式式式式式式式式托式式式式式式式式式式托式式式式式式式式式式式式式式扣式式式式式式式式式式式式式式式式式扣\n");
 	}
-	printf("戌式式式式扛式式式式式式式式式式式式式扛式式式式式式式式式式式式式式式式扛式式式式式式式式式式式式式式式式扛式式式式式式式式式式式戎\n");
+	printf("戌式式式式式扛式式式式式式式式式式式式式扛式式式式式式式式式式式式式式式式扛式式式式式式式式式式扛式式式式式式式式式式式式式式扛式式式式式式式式式式式式式式式式式戎\n");
 }
 
 void DebugProcess(ProcessPtr process)
 {
 	if (process == NULL)
 		return;
-	printf("忙式式式式成式式式式式式式式式式式式式成式式式式式式式式式式式式式式式式成式式式式式式式式式式式式式式式式成式式式式式式式式式式式忖\n");
-	printf("弛 I D弛  Arival Time弛  CPU Burst Time弛  I/O Burst Time弛  Priority 弛\n");
-	printf("戍式式式式托式式式式式式式式式式式式式托式式式式式式式式式式式式式式式式托式式式式式式式式式式式式式式式式托式式式式式式式式式式式扣\n");
-	printf("弛%4d弛\t%11d弛\t%12d弛\t%13d弛\t%8d 弛\n", process->ID, process->ArrivalTime, process->CPUBurstTime, process->IOBurstTime, process->Priority);
-	printf("戌式式式式扛式式式式式式式式式式式式式扛式式式式式式式式式式式式式式式式扛式式式式式式式式式式式式式式式式扛式式式式式式式式式式式戎\n");
+	printf("忙式式式式式成式式式式式式式式式式式式式成式式式式式式式式式式式式式式式式成式式式式式式式式式式成式式式式式式式式式式式式式式成式式式式式式式式式式式式式式式式式忖\n");
+	printf("弛 I D 弛 Arival Time 弛 CPU Burst Time 弛 Priority 弛 Waiting Time 弛 Trunaround Time 弛\n");
+	printf("戍式式式式式托式式式式式式式式式式式式式托式式式式式式式式式式式式式式式式托式式式式式式式式式式托式式式式式式式式式式式式式式扣式式式式式式式式式式式式式式式式式扣\n");
+	printf("弛%5d弛%13d弛%16d弛%10d弛%14d弛%17d弛\n", process->ID, process->ArrivalTime, process->CPUBurstTime, process->Priority, process->WaitingTime, process->TurnaroundTime);
+	printf("戌式式式式式扛式式式式式式式式式式式式式扛式式式式式式式式式式式式式式式式扛式式式式式式式式式式扛式式式式式式式式式式式式式式扛式式式式式式式式式式式式式式式式式戎\n");
 }
 
-void DeleteProcess(Node** head, ProcessPtr process)
+void DeleteProcess(NodePtr* head, ProcessPtr process)
 {
-	Node* Temp = *head;
-	Node* Find = NULL;
+	NodePtr Temp = *head;
+	NodePtr Find = NULL;
 
 	if ((*head)->Process == process)
 	{
@@ -129,13 +167,13 @@ void DeleteProcess(Node** head, ProcessPtr process)
 	PrintWarning("Can not find the process");
 }
 
-void MoveProcess(Node** from, Node** to, ProcessPtr process)
+void MoveProcess(NodePtr* from, NodePtr* to, ProcessPtr process)
 {
 	DeleteProcess(from, process);
 	InsertProcess(to, process);
 }
 
-int GetNodeLength(Node* head)
+int GetNodeLength(NodePtr head)
 {
 	if (head == NULL)
 		return 0;
@@ -143,9 +181,9 @@ int GetNodeLength(Node* head)
 	return 1 + GetNodeLength(head->Next);
 }
 
-ProcessPtr GetProcess(Node* head, GetProcessType type, int time)
+ProcessPtr GetProcess(NodePtr head, GetProcessType type, int time)
 {
-	ProcessPtr (*Func) (Node*, ProcessPtr, int);
+	ProcessPtr (*Func) (NodePtr, ProcessPtr, int);
 	switch (type)
 	{
 		case ARRIVALTIME:
@@ -162,7 +200,7 @@ ProcessPtr GetProcess(Node* head, GetProcessType type, int time)
 }
 
 
-ProcessPtr GetProcessByArrivalTime(Node* head, ProcessPtr process, int time)
+ProcessPtr GetProcessByArrivalTime(NodePtr head, ProcessPtr process, int time)
 {
 	if (head == NULL)
 	{
@@ -182,7 +220,7 @@ ProcessPtr GetProcessByArrivalTime(Node* head, ProcessPtr process, int time)
 	return GetProcessByArrivalTime(head->Next, process, time);
 }
 
-ProcessPtr GetProcessByPriority(Node* head, ProcessPtr process, int time)
+ProcessPtr GetProcessByPriority(NodePtr head, ProcessPtr process, int time)
 {
 	if (head == NULL)
 	{
