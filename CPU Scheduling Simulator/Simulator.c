@@ -8,7 +8,18 @@ void main(int argc)
 		scanf("%d", &argc);
 	}
 	Init(argc);
-	FCFSSchedule();
+	DebugNode(JobQueue);
+	int time = 0;
+	Node* GanttNode = NULL;
+	while (TRUE)
+	{
+		if (JobQueue == NULL && ReadyQueue == NULL && WaitingQueue == NULL && RunningProcess == NULL)
+			break;
+		ProcessPtr process = Simulate(time, FCFS, 0, 0);
+		InsertProcess(&GanttNode, process);
+		time++;
+	}
+	DrawGanttChart(GanttNode);
 }
 
 void Init(int size)
@@ -39,21 +50,131 @@ void CreateProcess(int size)
 
 	for (int i = 0; i < size; i++)
 	{
-		Process* process = (Process*)malloc(sizeof(Process));
+		ProcessPtr process = (ProcessPtr)malloc(sizeof(Process));
 		process->ID = randID;
 		process->CPUBurstTime = rand() % 20 + 1;
 		process->IOBurstTime = rand() % 20 + 1;
 		process->ArrivalTime = rand() % 20 + 1;
 		process->Priority = numbers[i];
-		InsertProcess(&ReadyQueue, process);
+		process->CPURemaningTime = process->CPUBurstTime;
+		process->IORemaningTime = process->IOBurstTime;
+		process->WaitingTime = 0;
+		process->TurnaroundTime = 0;
+		InsertProcess(&JobQueue, process);
 		randID += rand() % 30 + 1;
 	}
 }
 
-void FCFSSchedule()
+ProcessPtr Schedule(AlgorithmType type, int preemptive, int timeQuantum)
 {
+	switch (type)
+	{
+		case FCFS:
+			return FCFSAlgorithm();
+		default:
+			PrintError("Invalid AlgorithmType");
+			return NULL;
+	}
+}
+
+ProcessPtr Simulate(int time, AlgorithmType type, int preemptive, int timeQuantum)
+{
+	SimulateTime++;
 	while (TRUE)
 	{
-
+		ProcessPtr Temp = GetProcess(JobQueue, ARRIVALTIME, time);
+		if (Temp == NULL)
+			break;
+		MoveProcess(&JobQueue, &ReadyQueue, Temp);
 	}
+
+	ProcessPtr PrevProcess = RunningProcess;
+	RunningProcess = Schedule(type, preemptive, timeQuantum);
+
+	WaitAllProcess(ReadyQueue);
+	PerformIOOperation(WaitingQueue);
+	if (RunningProcess != NULL)
+	{
+		return ExecuteRunningProcess();
+	}
+	else
+	{
+		return NULL;
+	}
+}
+
+ProcessPtr FCFSAlgorithm()
+{
+	ProcessPtr process = ReadyQueue == NULL ? NULL : ReadyQueue->Process;
+	if (process != NULL)
+	{
+		if (RunningProcess != NULL)
+		{
+			return RunningProcess;
+		}
+		else
+		{
+			DeleteProcess(&ReadyQueue, process);
+			return process;
+		}
+	}
+	else
+	{
+		return RunningProcess;
+	}
+}
+
+void WaitAllProcess(Node* head)
+{
+	if (head == NULL)
+		return;
+
+	ProcessPtr Process = head->Process;
+	Process->TurnaroundTime++;
+	Process->WaitingTime++;
+
+	WaitAllProcess(head->Next);
+}
+
+void PerformIOOperation(Node* head)
+{
+	if (head == NULL)
+		return;
+
+	ProcessPtr Process = head->Process;
+	Process->TurnaroundTime++;
+	Process->IORemaningTime--;
+
+	if (Process->IORemaningTime <= 0)
+	{
+		head = (head->Next != NULL && head->Next->Next != NULL) ? head->Next->Next : NULL;
+		MoveProcess(&WaitingQueue, &ReadyQueue, Process);
+		if(head != NULL)
+			PerformIOOperation(head);
+	}
+	else
+	{
+		PerformIOOperation(head->Next);
+	}
+}
+
+ProcessPtr ExecuteRunningProcess()
+{
+	ProcessPtr temp = RunningProcess;
+	RunningProcess->CPURemaningTime--;
+	RunningProcess->TurnaroundTime++;
+
+	if (RunningProcess->CPURemaningTime <= 0)
+	{
+		InsertProcess(&TerminatedQueue, RunningProcess);
+		RunningProcess = NULL;
+		return temp;
+	}
+	else if (RunningProcess->IORemaningTime > 0)
+	{
+		InsertProcess(&WaitingQueue, RunningProcess);
+		RunningProcess = NULL;
+		return temp;
+	}
+	return RunningProcess;
 }

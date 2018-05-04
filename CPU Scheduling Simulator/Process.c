@@ -1,6 +1,6 @@
 #include "Process.h"
 
-void InsertProcess(Node** head, Process* process)
+void InsertProcess(Node** head, ProcessPtr process)
 {
 	Node* NewNode = (Node*)malloc(sizeof(Node));
 	Node* Temp = *head;
@@ -21,6 +21,38 @@ void InsertProcess(Node** head, Process* process)
 	Temp->Next = NewNode;
 }
 
+void DrawGanttChart(Node* head)
+{
+	Node* temp = head;
+	ProcessPtr prev = NULL;
+	int time = 0;
+
+	printf("忙式式式式式式式式忖 0\n");
+	printf("弛  IDLE  弛\n");
+	while (temp != NULL)
+	{
+		if (temp->Process != prev)
+		{
+			printf("戍式式式式式式式式扣 %d\n", time);
+			if (temp->Process == NULL)
+			{
+				printf("弛  IDLE  弛\n");
+			}
+			else
+			{
+				printf("弛  %3d   弛\n", temp->Process->ID);
+			}
+		}
+		else
+		{
+			printf("弛        弛\n");
+		}
+		time++;
+		prev = temp->Process;
+		temp = temp->Next;
+	}
+	printf("戌式式式式式式式式戎 %d\n", time);
+}
 
 void DebugNode(Node* head)
 {
@@ -30,10 +62,12 @@ void DebugNode(Node* head)
 	printf("戍式式式式托式式式式式式式式式式式式式托式式式式式式式式式式式式式式式式托式式式式式式式式式式式式式式式式托式式式式式式式式式式式扣\n");
 	while (Temp != NULL)
 	{
-		Process* process = Temp->Process;
+		ProcessPtr process = Temp->Process;
 		if (process == NULL)
 		{
-			PrintError("Process is NULL");
+			//PrintError("Process is NULL");
+			Temp = Temp->Next;
+			continue;
 		}
 		printf("弛%4d弛\t%11d弛\t%12d弛\t%13d弛\t%8d 弛\n", process->ID, process->ArrivalTime, process->CPUBurstTime, process->IOBurstTime, process->Priority);
 		Temp = Temp->Next;
@@ -43,8 +77,10 @@ void DebugNode(Node* head)
 	printf("戌式式式式扛式式式式式式式式式式式式式扛式式式式式式式式式式式式式式式式扛式式式式式式式式式式式式式式式式扛式式式式式式式式式式式戎\n");
 }
 
-void DebugProcess(Process* process)
+void DebugProcess(ProcessPtr process)
 {
+	if (process == NULL)
+		return;
 	printf("忙式式式式成式式式式式式式式式式式式式成式式式式式式式式式式式式式式式式成式式式式式式式式式式式式式式式式成式式式式式式式式式式式忖\n");
 	printf("弛 I D弛  Arival Time弛  CPU Burst Time弛  I/O Burst Time弛  Priority 弛\n");
 	printf("戍式式式式托式式式式式式式式式式式式式托式式式式式式式式式式式式式式式式托式式式式式式式式式式式式式式式式托式式式式式式式式式式式扣\n");
@@ -52,7 +88,7 @@ void DebugProcess(Process* process)
 	printf("戌式式式式扛式式式式式式式式式式式式式扛式式式式式式式式式式式式式式式式扛式式式式式式式式式式式式式式式式扛式式式式式式式式式式式戎\n");
 }
 
-void DeleteProcess(Node** head, Process* process)
+void DeleteProcess(Node** head, ProcessPtr process)
 {
 	Node* Temp = *head;
 	Node* Find = NULL;
@@ -87,6 +123,12 @@ void DeleteProcess(Node** head, Process* process)
 	PrintWarning("Can not find the process");
 }
 
+void MoveProcess(Node** from, Node** to, ProcessPtr process)
+{
+	DeleteProcess(from, process);
+	InsertProcess(to, process);
+}
+
 int GetNodeLength(Node* head)
 {
 	if (head == NULL)
@@ -95,9 +137,9 @@ int GetNodeLength(Node* head)
 	return 1 + GetNodeLength(head->Next);
 }
 
-Process* GetProcess(Node* head, GetProcessType type)
+ProcessPtr GetProcess(Node* head, GetProcessType type, int time)
 {
-	Process* (*Func) (Node*, Process*);
+	ProcessPtr (*Func) (Node*, ProcessPtr, int);
 	switch (type)
 	{
 		case ARRIVALTIME:
@@ -110,10 +152,11 @@ Process* GetProcess(Node* head, GetProcessType type)
 			PrintError("Invalid GetProcessType");
 			return NULL;
 	}
-	return Func(head, NULL);
+	return Func(head, NULL, time);
 }
 
-Process* GetProcessByArrivalTime(Node* head, Process* process)
+
+ProcessPtr GetProcessByArrivalTime(Node* head, ProcessPtr process, int time)
 {
 	if (head == NULL)
 	{
@@ -123,14 +166,17 @@ Process* GetProcessByArrivalTime(Node* head, Process* process)
 			return process;
 	}
 
-	if (process == NULL || head->Process->ArrivalTime < process->ArrivalTime)
-		process = head->Process;
-	if (head->Process->ArrivalTime == process->ArrivalTime)
-		process = head->Process->ID < process->ID ? head->Process : process;
-	return GetProcessByArrivalTime(head->Next, process);
+	if (head->Process->ArrivalTime <= time)
+	{
+		if (process == NULL || head->Process->ArrivalTime < process->ArrivalTime)
+			process = head->Process;
+		if (head->Process->ArrivalTime == process->ArrivalTime)
+			process = head->Process->ID < process->ID ? head->Process : process;
+	}
+	return GetProcessByArrivalTime(head->Next, process, time);
 }
 
-Process* GetProcessByPriority(Node* head, Process* process)
+ProcessPtr GetProcessByPriority(Node* head, ProcessPtr process, int time)
 {
 	if (head == NULL)
 	{
@@ -139,11 +185,15 @@ Process* GetProcessByPriority(Node* head, Process* process)
 		else
 			return process;
 	}
-	if (process == NULL || head->Process->Priority < process->Priority)
-		process = head->Process;
-	if (head->Process->ArrivalTime == process->ArrivalTime)
-		process = head->Process->ID < process->ID ? head->Process : process;
+
+	if (head->Process->ArrivalTime <= time)
+	{
+		if (process == NULL || head->Process->Priority < process->Priority)
+			process = head->Process;
+		if (head->Process->ArrivalTime == process->ArrivalTime)
+			process = head->Process->ID < process->ID ? head->Process : process;
+	}
 	
-	return GetProcessByPriority(head->Next, process);
+	return GetProcessByPriority(head->Next, process, time);
 }
 

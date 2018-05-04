@@ -7,24 +7,31 @@ struct process
 	int IOBurstTime;
 	int ArrivalTime;
 	int Priority;
+	int CPURemaningTime;
+	int IORemaningTime;
+	int WaitingTime;
+	int TurnaroundTime;
 } typedef Process;
 
+typedef Process* ProcessPtr;
 
 struct node
 {
-	Process* Process;
+	ProcessPtr Process;
 	struct node *Next;
 } typedef Node;
 
 enum GetProcessTypeEnum { ARRIVALTIME, PRIORITY } typedef GetProcessType;
 
-void InsertProcess(Node** head, Process* process);
-void DeleteProcess(Node** head, Process* process);
+void InsertProcess(Node** head, ProcessPtr process);
+void DeleteProcess(Node** head, ProcessPtr process);
+void MoveProcess(Node** from, Node** to, ProcessPtr process);
 int GetNodeLength(Node* head);
 
+void DrawGanttChart(Node* head);
 void DebugNode(Node* head);
-void DebugProcess(Process* process);
+void DebugProcess(ProcessPtr process);
 
-Process* GetProcess(Node* head, GetProcessType type);
-Process* GetProcessByArrivalTime(Node* head, Process* process);
-Process* GetProcessByPriority(Node* head, Process* process);
+ProcessPtr GetProcess(Node* head, GetProcessType type, int time);
+ProcessPtr GetProcessByArrivalTime(Node* head, ProcessPtr process, int time);
+ProcessPtr GetProcessByPriority(Node* head, ProcessPtr process, int time);
