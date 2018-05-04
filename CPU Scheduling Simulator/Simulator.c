@@ -57,7 +57,7 @@ void CreateProcess(int size)
 		process->ArrivalTime = rand() % 20 + 1;
 		process->Priority = numbers[i];
 		process->CPURemaningTime = process->CPUBurstTime;
-		process->IORemaningTime = process->IOBurstTime;
+		process->IORemaningTime = 0;
 		process->WaitingTime = 0;
 		process->TurnaroundTime = 0;
 		InsertProcess(&JobQueue, process);
@@ -163,6 +163,11 @@ ProcessPtr ExecuteRunningProcess()
 	ProcessPtr temp = RunningProcess;
 	RunningProcess->CPURemaningTime--;
 	RunningProcess->TurnaroundTime++;
+
+	if (rand() % 5 == 0)
+	{
+		RunningProcess->IORemaningTime += rand() % 10;
+	}
 
 	if (RunningProcess->CPURemaningTime <= 0)
 	{
