@@ -1,5 +1,19 @@
 #include "Process.h"
 
+ProcessPtr NewProcess(int id, int cbt, int at, int p)
+{
+	ProcessPtr process = (ProcessPtr) malloc(sizeof(Process));
+	process->ID = id;
+	process->CPUBurstTime = cbt;
+	process->ArrivalTime = at;
+	process->Priority = p;
+	process->CPURemaningTime = cbt;
+	process->IORemaningTime = 0;
+	process->WaitingTime = 0;
+	process->TurnaroundTime = 0;
+	return process;
+}
+
 void InsertProcess(NodePtr* head, ProcessPtr process)
 {
 	NodePtr NewNode = (NodePtr)malloc(sizeof(Node));
@@ -240,4 +254,3 @@ ProcessPtr GetProcessByPriority(NodePtr head, ProcessPtr process, int time)
 	
 	return GetProcessByPriority(head->Next, process, time);
 }
-

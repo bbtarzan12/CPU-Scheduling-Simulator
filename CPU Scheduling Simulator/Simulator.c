@@ -8,9 +8,17 @@ void main(int argc)
 		scanf("%d", &argc);
 	}
 	Init(argc);
-	NodePtr GanttChart = Update(FCFS, 0, 0);
+	//DebugInit();
+	NodePtr GanttChart = Update(RR, FALSE, 4);
 	DrawGanttChart(GanttChart);
 	DrawNodeInformation(TerminatedQueue);
+}
+
+void DebugInit()
+{
+	InsertProcess(&JobQueue, NewProcess(1, 24, 0, 3));
+	InsertProcess(&JobQueue, NewProcess(2, 3, 0, 1));
+	InsertProcess(&JobQueue, NewProcess(3, 3, 0, 4));
 }
 
 void Init(int size)
@@ -42,9 +50,9 @@ void CreateProcess(int size)
 	for (int i = 0; i < size; i++)
 	{
 		ProcessPtr process = (ProcessPtr)malloc(sizeof(Process));
-		process->ID = randID;
+		process->ID = ID_I ? i : randID;
 		process->CPUBurstTime = rand() % 20 + 1;
-		process->ArrivalTime = rand() % 20 + 1;
+		process->ArrivalTime = ARRIVALTIME_I ? i : rand() % 20 + 1;
 		process->Priority = numbers[i];
 		process->CPURemaningTime = process->CPUBurstTime;
 		process->IORemaningTime = 0;
@@ -55,10 +63,11 @@ void CreateProcess(int size)
 	}
 }
 
-NodePtr Update(AlgorithmType type, int preemptive, int timeQuantum)
+NodePtr Update(AlgorithmType type, bool preemptive, int timeQuantum)
 {
 	DebugNode(JobQueue);
 	int time = 0;
+	TimeConsumed = 0;
 	NodePtr GanttNode = NULL;
 	while (TRUE)
 	{
@@ -71,19 +80,25 @@ NodePtr Update(AlgorithmType type, int preemptive, int timeQuantum)
 	return GanttNode;
 }
 
-ProcessPtr Schedule(AlgorithmType type, int preemptive, int timeQuantum)
+ProcessPtr Schedule(AlgorithmType type, bool preemptive, int timeQuantum)
 {
 	switch (type)
 	{
 		case FCFS:
 			return FCFSAlgorithm();
+		case SJF:
+			return SJFAlgorithm(preemptive);
+		case P:
+			return PriorityAlgorithm(preemptive);
+		case RR:
+			return RRAlgorithm(timeQuantum);
 		default:
 			PrintError("Invalid AlgorithmType");
 			return NULL;
 	}
 }
 
-ProcessPtr Simulate(int time, AlgorithmType type, int preemptive, int timeQuantum)
+ProcessPtr Simulate(int time, AlgorithmType type, bool preemptive, int timeQuantum)
 {
 	SimulateTime++;
 	while (TRUE)
@@ -96,6 +111,11 @@ ProcessPtr Simulate(int time, AlgorithmType type, int preemptive, int timeQuantu
 
 	ProcessPtr PrevProcess = RunningProcess;
 	RunningProcess = Schedule(type, preemptive, timeQuantum);
+
+	if (PrevProcess != RunningProcess)
+	{
+		TimeConsumed = 0;
+	}
 
 	WaitAllProcess(ReadyQueue);
 	PerformIOOperation(WaitingQueue);
@@ -111,8 +131,8 @@ ProcessPtr Simulate(int time, AlgorithmType type, int preemptive, int timeQuantu
 
 ProcessPtr FCFSAlgorithm()
 {
-	ProcessPtr process = ReadyQueue == NULL ? NULL : ReadyQueue->Process;
-	if (process != NULL)
+	ProcessPtr Process = ReadyQueue == NULL ? NULL : ReadyQueue->Process;
+	if (Process != NULL)
 	{
 		if (RunningProcess != NULL)
 		{
@@ -120,8 +140,161 @@ ProcessPtr FCFSAlgorithm()
 		}
 		else
 		{
-			DeleteProcess(&ReadyQueue, process);
-			return process;
+			DeleteProcess(&ReadyQueue, Process);
+			return Process;
+		}
+	}
+	else
+	{
+		return RunningProcess;
+	}
+}
+
+ProcessPtr SJFAlgorithm(bool preemtive)
+{
+	ProcessPtr Process = ReadyQueue == NULL ? NULL : ReadyQueue->Process;
+	if (Process != NULL)
+	{
+		NodePtr temp = ReadyQueue;
+		while (temp != NULL)
+		{
+
+			if (temp->Process->CPURemaningTime <= Process->CPURemaningTime)
+			{
+				if (temp->Process->CPURemaningTime == Process->CPURemaningTime)
+				{
+					if (temp->Process->ArrivalTime <= Process->ArrivalTime)
+						Process = temp->Process;
+				}
+				else
+				{
+					Process = temp->Process;
+				}
+			}
+			temp = temp->Next;
+		}
+
+		if (RunningProcess != NULL)
+		{
+			if (preemtive)
+			{
+
+				if (RunningProcess->CPURemaningTime >= Process->CPURemaningTime)
+				{
+					if (RunningProcess->CPURemaningTime == Process->CPURemaningTime)
+					{
+						if (RunningProcess->ArrivalTime <= Process->ArrivalTime)
+							return RunningProcess;
+					}
+
+					InsertProcess(&ReadyQueue, RunningProcess);
+					RunningProcess = NULL;
+					DeleteProcess(&ReadyQueue, Process);
+					return Process;
+				}
+				return RunningProcess;
+			}
+			else
+			{
+				return RunningProcess;
+			}
+		}
+		else
+		{
+			DeleteProcess(&ReadyQueue, Process);
+			return Process;
+		}
+	}
+	else
+	{
+		return RunningProcess;
+	}
+}
+
+ProcessPtr PriorityAlgorithm(bool preemtive)
+{
+	ProcessPtr Process = ReadyQueue == NULL ? NULL : ReadyQueue->Process;
+	if (Process != NULL)
+	{
+		NodePtr temp = ReadyQueue;
+		while (temp != NULL)
+		{
+
+			if (temp->Process->Priority <= Process->Priority)
+			{
+				if (temp->Process->Priority == Process->Priority)
+				{
+					if (temp->Process->ArrivalTime <= Process->ArrivalTime)
+						Process = temp->Process;
+				}
+				else
+				{
+					Process = temp->Process;
+				}
+			}
+			temp = temp->Next;
+		}
+
+		if (RunningProcess != NULL)
+		{
+			if (preemtive)
+			{
+
+				if (RunningProcess->Priority >= Process->Priority)
+				{
+					if (RunningProcess->Priority == Process->Priority)
+					{
+						if (RunningProcess->ArrivalTime <= Process->ArrivalTime)
+							return RunningProcess;
+					}
+
+					InsertProcess(&ReadyQueue, RunningProcess);
+					RunningProcess = NULL;
+					DeleteProcess(&ReadyQueue, Process);
+					return Process;
+				}
+				return RunningProcess;
+			}
+			else
+			{
+				return RunningProcess;
+			}
+		}
+		else
+		{
+			DeleteProcess(&ReadyQueue, Process);
+			return Process;
+		}
+	}
+	else
+	{
+		return RunningProcess;
+	}
+}
+
+ProcessPtr RRAlgorithm(int timeQuantum)
+{
+	ProcessPtr Process = ReadyQueue == NULL ? NULL : ReadyQueue->Process;
+	if (Process != NULL)
+	{
+		if (RunningProcess != NULL)
+		{
+			if (TimeConsumed >= timeQuantum)
+			{
+				InsertProcess(&ReadyQueue, RunningProcess);
+				RunningProcess = NULL;
+				DeleteProcess(&ReadyQueue, Process);
+				return Process;
+			}
+			else
+			{
+				return RunningProcess;
+			}
+		}
+		else
+		{
+			DeleteProcess(&ReadyQueue, Process);
+			return Process;
 		}
 	}
 	else
@@ -169,6 +342,7 @@ ProcessPtr ExecuteRunningProcess()
 	ProcessPtr temp = RunningProcess;
 	RunningProcess->CPURemaningTime--;
 	RunningProcess->TurnaroundTime++;
+	TimeConsumed++;
 
 	if (RANDOM_IO && rand() % 5 == 0)
 	{

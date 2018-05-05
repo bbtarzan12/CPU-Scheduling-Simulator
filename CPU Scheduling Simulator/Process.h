@@ -24,6 +24,7 @@ typedef Node* NodePtr;
 
 enum GetProcessTypeEnum { ARRIVALTIME, PRIORITY } typedef GetProcessType;
 
+ProcessPtr NewProcess(int id, int cbt, int at, int p);
 void InsertProcess(NodePtr* head, ProcessPtr process);
 void DeleteProcess(NodePtr* head, ProcessPtr process);
 void MoveProcess(NodePtr* from, NodePtr* to, ProcessPtr process);
