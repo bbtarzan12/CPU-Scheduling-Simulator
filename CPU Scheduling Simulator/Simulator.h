@@ -8,7 +8,7 @@ void CreateProcess(int size);
 NodePtr Update(AlgorithmType type, bool preemptive, int timeQuantum);
 ProcessPtr Schedule(AlgorithmType type, bool preemptive, int timeQuantum);
 ProcessPtr Simulate(int time, AlgorithmType type, bool preemptive, int timeQuantum );
-void Evaluation(Node* Terminated);
+void Evaluation();
 
 void WaitAllProcess(NodePtr head);
 void PerformIOOperation(NodePtr head);

@@ -9,16 +9,24 @@ void main(int argc)
 	}
 	Init(argc);
 	//DebugInit();
+	Evaluation();
+}
+
+void Evaluation()
+{
 	NodePtr GanttChart = Update(RR, FALSE, 4);
-	DrawGanttChart(GanttChart);
+	DrawVerticalGanttChart(GanttChart);
+	DrawHorizontalGanttChart(GanttChart);
 	DrawNodeInformation(TerminatedQueue);
 }
 
 void DebugInit()
 {
-	InsertProcess(&JobQueue, NewProcess(1, 24, 0, 3));
-	InsertProcess(&JobQueue, NewProcess(2, 3, 0, 1));
-	InsertProcess(&JobQueue, NewProcess(3, 3, 0, 4));
+	//									id cbt at p
+	InsertProcess(&JobQueue, NewProcess(1, 5, 0, 1));
+	InsertProcess(&JobQueue, NewProcess(2, 3, 1, 2));
+	InsertProcess(&JobQueue, NewProcess(3, 8, 2, 3));
+	InsertProcess(&JobQueue, NewProcess(3, 6, 3, 4));
 }
 
 void Init(int size)

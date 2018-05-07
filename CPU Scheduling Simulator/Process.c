@@ -35,7 +35,7 @@ void InsertProcess(NodePtr* head, ProcessPtr process)
 	Temp->Next = NewNode;
 }
 
-void DrawGanttChart(NodePtr head)
+void DrawVerticalGanttChart(NodePtr head)
 {
 	NodePtr temp = head;
 	ProcessPtr prev = -1;
@@ -72,6 +72,98 @@ void DrawGanttChart(NodePtr head)
 		temp = temp->Next;
 	}
 	printf("戌式式式式式式式式戎 %d\n", time);
+}
+
+void DrawHorizontalGanttChart(NodePtr head)
+{
+	NodePtr Temp = head;
+	ProcessPtr Prev = -1;
+	int Time = 0;
+	while (Temp != NULL)
+	{
+		if (Temp->Process != Prev)
+		{
+			if (Temp->Process != NULL)
+			{
+				printf("%d", Temp->Process->ID);
+			}
+			else
+			{
+				printf(" I ");
+			}
+		}
+		else
+		{
+			printf(" ");
+		}
+		Time++;
+		Prev = Temp->Process;
+		Temp = Temp->Next;
+	}
+	printf("\n");
+
+
+	Temp = head;
+	Prev = -1;
+	Time = 0;
+
+	while (Temp != NULL)
+	{
+		if (Temp->Process != Prev)
+		{
+			if (Prev == -1)
+			{
+				printf("戍");
+			}
+			else
+			{
+				printf("托");
+			}
+
+			if (Temp->Process == NULL)
+			{
+				printf("式");
+			}
+			else
+			{
+				printf("式");
+			}
+		}
+		else
+		{
+			printf("式");
+		}
+		Time++;
+		Prev = Temp->Process;
+		Temp = Temp->Next;
+	}
+	printf("扣\n");
+
+	Temp = head;
+	Prev = -1;
+	Time = 0;
+	while (Temp != NULL)
+	{
+		if (Temp->Process != Prev)
+		{
+			if (Prev == -1)
+			{
+				printf("0 ");
+			}
+			else
+			{
+				printf("%1d", Time);
+			}
+		}
+		else
+		{
+			printf(" ");
+		}
+		Time++;
+		Prev = Temp->Process;
+		Temp = Temp->Next;
+	}
+	printf("%d\n", Time);
 }
 
 void DrawNodeInformation(NodePtr head)

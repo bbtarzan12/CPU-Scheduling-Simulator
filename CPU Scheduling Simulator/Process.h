@@ -30,7 +30,9 @@ void DeleteProcess(NodePtr* head, ProcessPtr process);
 void MoveProcess(NodePtr* from, NodePtr* to, ProcessPtr process);
 int GetNodeLength(NodePtr head);
 
-void DrawGanttChart(NodePtr head);
+
+void DrawVerticalGanttChart(NodePtr head);
+void DrawHorizontalGanttChart(NodePtr head);
 void DrawNodeInformation(NodePtr head);
 void DebugNode(NodePtr head);
 void DebugProcess(ProcessPtr process);
