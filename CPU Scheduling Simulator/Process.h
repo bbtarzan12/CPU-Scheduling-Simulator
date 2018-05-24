@@ -4,6 +4,7 @@ struct process
 {
 	int ID;
 	int CPUBurstTime;
+	int IOBurstTime;
 	int ArrivalTime;
 	int Priority;
 	int CPURemaningTime;
@@ -32,7 +33,6 @@ int GetNodeLength(NodePtr head);
 
 
 void DrawVerticalGanttChart(NodePtr head);
-void DrawHorizontalGanttChart(NodePtr head);
 void DrawNodeInformation(NodePtr head);
 void DebugNode(NodePtr head);
 void DebugProcess(ProcessPtr process);

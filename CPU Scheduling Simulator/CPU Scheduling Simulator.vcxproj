@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Helper.c" />
     <ClCompile Include="Process.c" />
     <ClCompile Include="Simulator.c" />
   </ItemGroup>

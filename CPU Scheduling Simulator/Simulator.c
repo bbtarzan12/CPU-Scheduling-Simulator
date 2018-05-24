@@ -16,8 +16,8 @@ void Evaluation()
 {
 	NodePtr GanttChart = Update(RR, FALSE, 4);
 	DrawVerticalGanttChart(GanttChart);
-	DrawHorizontalGanttChart(GanttChart);
 	DrawNodeInformation(TerminatedQueue);
+	free(GanttChart);
 }
 
 void DebugInit()
@@ -60,6 +60,7 @@ void CreateProcess(int size)
 		ProcessPtr process = (ProcessPtr)malloc(sizeof(Process));
 		process->ID = ID_I ? i : randID;
 		process->CPUBurstTime = rand() % 20 + 1;
+		process->IOBurstTime = rand() % 5 + 1;
 		process->ArrivalTime = ARRIVALTIME_I ? i : rand() % 20 + 1;
 		process->Priority = numbers[i];
 		process->CPURemaningTime = process->CPUBurstTime;
@@ -68,7 +69,9 @@ void CreateProcess(int size)
 		process->TurnaroundTime = 0;
 		InsertProcess(&JobQueue, process);
 		randID += rand() % 30 + 1;
+		free(process);
 	}
+	free(numbers);
 }
 
 NodePtr Update(AlgorithmType type, bool preemptive, int timeQuantum)
@@ -354,7 +357,7 @@ ProcessPtr ExecuteRunningProcess()
 
 	if (RANDOM_IO && rand() % 5 == 0)
 	{
-		RunningProcess->IORemaningTime += rand() % 10;
+		RunningProcess->IORemaningTime += RunningProcess->IOBurstTime;
 	}
 
 	if (RunningProcess->CPURemaningTime <= 0)

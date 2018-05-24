@@ -21,9 +21,6 @@
     <ClCompile Include="Process.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Helper.c">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Simulator.h">

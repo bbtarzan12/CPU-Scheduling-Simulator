@@ -74,98 +74,6 @@ void DrawVerticalGanttChart(NodePtr head)
 	printf("戌式式式式式式式式戎 %d\n", time);
 }
 
-void DrawHorizontalGanttChart(NodePtr head)
-{
-	NodePtr Temp = head;
-	ProcessPtr Prev = -1;
-	int Time = 0;
-	while (Temp != NULL)
-	{
-		if (Temp->Process != Prev)
-		{
-			if (Temp->Process != NULL)
-			{
-				printf("%d", Temp->Process->ID);
-			}
-			else
-			{
-				printf(" I ");
-			}
-		}
-		else
-		{
-			printf(" ");
-		}
-		Time++;
-		Prev = Temp->Process;
-		Temp = Temp->Next;
-	}
-	printf("\n");
-
-
-	Temp = head;
-	Prev = -1;
-	Time = 0;
-
-	while (Temp != NULL)
-	{
-		if (Temp->Process != Prev)
-		{
-			if (Prev == -1)
-			{
-				printf("戍");
-			}
-			else
-			{
-				printf("托");
-			}
-
-			if (Temp->Process == NULL)
-			{
-				printf("式");
-			}
-			else
-			{
-				printf("式");
-			}
-		}
-		else
-		{
-			printf("式");
-		}
-		Time++;
-		Prev = Temp->Process;
-		Temp = Temp->Next;
-	}
-	printf("扣\n");
-
-	Temp = head;
-	Prev = -1;
-	Time = 0;
-	while (Temp != NULL)
-	{
-		if (Temp->Process != Prev)
-		{
-			if (Prev == -1)
-			{
-				printf("0 ");
-			}
-			else
-			{
-				printf("%1d", Time);
-			}
-		}
-		else
-		{
-			printf(" ");
-		}
-		Time++;
-		Prev = Temp->Process;
-		Temp = Temp->Next;
-	}
-	printf("%d\n", Time);
-}
-
 void DrawNodeInformation(NodePtr head)
 {
 	NodePtr Temp = head;
@@ -207,9 +115,9 @@ void DrawNodeInformation(NodePtr head)
 void DebugNode(NodePtr head)
 {
 	NodePtr Temp = head;
-	printf("忙式式式式式成式式式式式式式式式式式式式成式式式式式式式式式式式式式式式式成式式式式式式式式式式成式式式式式式式式式式式式式式成式式式式式式式式式式式式式式式式式忖\n");
-	printf("弛 I D 弛 Arival Time 弛 CPU Burst Time 弛 Priority 弛 Waiting Time 弛 Trunaround Time 弛\n");
-	printf("戍式式式式式托式式式式式式式式式式式式式托式式式式式式式式式式式式式式式式托式式式式式式式式式式托式式式式式式式式式式式式式式扣式式式式式式式式式式式式式式式式式扣\n");
+	printf("忙式式式式式成式式式式式式式式式式式式式成式式式式式式式式式式式式式式式式成式式式式式式式式式式式式式式式成式式式式式式式式式式成式式式式式式式式式式式式式式成式式式式式式式式式式式式式式式式式忖\n");
+	printf("弛 I D 弛 Arival Time 弛 CPU Burst Time 弛 IO Burst Time 弛 Priority 弛 Waiting Time 弛 Trunaround Time 弛\n");
+	printf("戍式式式式式托式式式式式式式式式式式式式托式式式式式式式式式式式式式式式式托式式式式式式式式式式式式式式式托式式式式式式式式式式托式式式式式式式式式式式式式式扣式式式式式式式式式式式式式式式式式扣\n");
 	while (Temp != NULL)
 	{
 		ProcessPtr process = Temp->Process;
@@ -219,12 +127,12 @@ void DebugNode(NodePtr head)
 			Temp = Temp->Next;
 			continue;
 		}
-		printf("弛%5d弛%13d弛%16d弛%10d弛%14d弛%17d弛\n", process->ID, process->ArrivalTime, process->CPUBurstTime, process->Priority, process->WaitingTime, process->TurnaroundTime);
+		printf("弛%5d弛%13d弛%16d弛%15d弛%10d弛%14d弛%17d弛\n", process->ID, process->ArrivalTime, process->CPUBurstTime, process->IOBurstTime, process->Priority, process->WaitingTime, process->TurnaroundTime);
 		Temp = Temp->Next;
 		if(Temp != NULL)
-			printf("戍式式式式式托式式式式式式式式式式式式式托式式式式式式式式式式式式式式式式托式式式式式式式式式式托式式式式式式式式式式式式式式扣式式式式式式式式式式式式式式式式式扣\n");
+			printf("戍式式式式式托式式式式式式式式式式式式式托式式式式式式式式式式式式式式式式托式式式式式式式式式式式式式式式托式式式式式式式式式式托式式式式式式式式式式式式式式扣式式式式式式式式式式式式式式式式式扣\n");
 	}
-	printf("戌式式式式式扛式式式式式式式式式式式式式扛式式式式式式式式式式式式式式式式扛式式式式式式式式式式扛式式式式式式式式式式式式式式扛式式式式式式式式式式式式式式式式式戎\n");
+	printf("戌式式式式式扛式式式式式式式式式式式式式扛式式式式式式式式式式式式式式式式扛式式式式式式式式式式式式式式式扛式式式式式式式式式式扛式式式式式式式式式式式式式式扛式式式式式式式式式式式式式式式式式戎\n");
 }
 
 void DebugProcess(ProcessPtr process)
