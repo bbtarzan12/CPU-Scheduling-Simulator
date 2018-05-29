@@ -9,7 +9,17 @@
 #define ARRIVALTIME_I 0
 #define ID_I 1
 
-typedef enum { FALSE, TRUE } bool;
+typedef enum
+{
+	FALSE, TRUE
+} bool;
 
-void PrintError(char* text);
-void PrintWarning(char* text);
+inline void PrintError(char* text)
+{
+	printf("<Error> %s\n", text);
+}
+
+inline void PrintWarning(char * text)
+{
+	printf("<Warning> %s\n", text);
+}

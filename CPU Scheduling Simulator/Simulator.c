@@ -23,12 +23,20 @@ void Evaluation(AlgorithmType type, bool preeptive)
 	NodePtr tempQueue = originalQueue;
 	while (tempQueue != NULL)
 	{
+		tempQueue->Process->CPURemaningTime = tempQueue->Process->CPUBurstTime;
+		tempQueue->Process->IORemaningTime = 0;
+		tempQueue->Process->WaitingTime = 0;
+		tempQueue->Process->TurnaroundTime = 0;
 		InsertProcess(&JobQueue, tempQueue->Process);
 		tempQueue = tempQueue->Next;
 	}
 	NodePtr GanttChart = Update(type, preeptive, 4);
 	DrawVerticalGanttChart(GanttChart);
 	DrawNodeInformation(TerminatedQueue);
+	free(TerminatedQueue);
+	TerminatedQueue = NULL;
+	free(GanttChart);
+	GanttChart = NULL;
 }
  
 void DebugInit()
@@ -42,13 +50,13 @@ void DebugInit()
 
 void Init(int size)
 {
+	srand(time(NULL));
 	CreateProcess(size);
 }
 
 void CreateProcess(int size)
 {
 	int* numbers = (int*)malloc(sizeof(int) * size);
-	srand(time(NULL));
 
 	int randID = rand() % 10 + 1;
 
@@ -70,8 +78,9 @@ void CreateProcess(int size)
 	{
 		ProcessPtr process = (ProcessPtr)malloc(sizeof(Process));
 		process->ID = ID_I ? i : randID;
-		process->CPUBurstTime = rand() % 10 + 1;
-		process->ArrivalTime = ARRIVALTIME_I ? i : rand() % 10 + 1;
+		process->CPUBurstTime = rand() % 20 + 1;
+		process->IOBurstTime = rand() % 5 + 1;
+		process->ArrivalTime = ARRIVALTIME_I ? i : rand() % 20 + 1;
 		process->Priority = numbers[i];
 		process->CPURemaningTime = process->CPUBurstTime;
 		process->IORemaningTime = 0;
@@ -80,6 +89,7 @@ void CreateProcess(int size)
 		InsertProcess(&originalQueue, process);
 		randID += rand() % 30 + 1;
 	}
+	free(numbers);
 }
 
 NodePtr Update(AlgorithmType type, bool preemptive, int timeQuantum)
@@ -365,8 +375,8 @@ ProcessPtr ExecuteRunningProcess()
 
 	if (RANDOM_IO && rand() % 5 == 0)
 	{
-		RunningProcess->IORemaningTime += rand() % 10;
-		printf("Random IO\n");
+		printf("Random IO (ID : %d)\n", RunningProcess->ID);
+		RunningProcess->IORemaningTime += RunningProcess->IOBurstTime;
 	}
 
 	if (RunningProcess->CPURemaningTime <= 0)
