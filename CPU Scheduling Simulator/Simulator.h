@@ -8,7 +8,7 @@ void CreateProcess(int size);
 NodePtr Update(AlgorithmType type, bool preemptive, int timeQuantum);
 ProcessPtr Schedule(AlgorithmType type, bool preemptive, int timeQuantum);
 ProcessPtr Simulate(int time, AlgorithmType type, bool preemptive, int timeQuantum );
-void Evaluation();
+void Evaluation(AlgorithmType type, bool preeptive);
 
 void WaitAllProcess(NodePtr head);
 void PerformIOOperation(NodePtr head);
@@ -19,6 +19,7 @@ ProcessPtr SJFAlgorithm(bool preemtive);
 ProcessPtr PriorityAlgorithm(bool preemtive);
 ProcessPtr RRAlgorithm(int timeQuantum);
 
+NodePtr originalQueue;
 NodePtr JobQueue;
 NodePtr ReadyQueue;
 ProcessPtr RunningProcess;

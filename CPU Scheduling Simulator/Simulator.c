@@ -8,18 +8,29 @@ void main(int argc)
 		scanf("%d", &argc);
 	}
 	Init(argc);
-	//DebugInit();
-	Evaluation();
+
+	Evaluation(FCFS, FALSE);
+	Evaluation(SJF, FALSE);
+	Evaluation(SJF, TRUE);
+	Evaluation(PRIORITY, FALSE);
+	Evaluation(PRIORITY, TRUE);
+	Evaluation(RR, TRUE);
+	
 }
 
-void Evaluation()
+void Evaluation(AlgorithmType type, bool preeptive)
 {
-	NodePtr GanttChart = Update(RR, FALSE, 4);
+	NodePtr tempQueue = originalQueue;
+	while (tempQueue != NULL)
+	{
+		InsertProcess(&JobQueue, tempQueue->Process);
+		tempQueue = tempQueue->Next;
+	}
+	NodePtr GanttChart = Update(type, preeptive, 4);
 	DrawVerticalGanttChart(GanttChart);
-	DrawHorizontalGanttChart(GanttChart);
 	DrawNodeInformation(TerminatedQueue);
 }
-
+ 
 void DebugInit()
 {
 	//									id cbt at p
@@ -59,14 +70,14 @@ void CreateProcess(int size)
 	{
 		ProcessPtr process = (ProcessPtr)malloc(sizeof(Process));
 		process->ID = ID_I ? i : randID;
-		process->CPUBurstTime = rand() % 20 + 1;
-		process->ArrivalTime = ARRIVALTIME_I ? i : rand() % 20 + 1;
+		process->CPUBurstTime = rand() % 10 + 1;
+		process->ArrivalTime = ARRIVALTIME_I ? i : rand() % 10 + 1;
 		process->Priority = numbers[i];
 		process->CPURemaningTime = process->CPUBurstTime;
 		process->IORemaningTime = 0;
 		process->WaitingTime = 0;
 		process->TurnaroundTime = 0;
-		InsertProcess(&JobQueue, process);
+		InsertProcess(&originalQueue, process);
 		randID += rand() % 30 + 1;
 	}
 }
@@ -355,6 +366,7 @@ ProcessPtr ExecuteRunningProcess()
 	if (RANDOM_IO && rand() % 5 == 0)
 	{
 		RunningProcess->IORemaningTime += rand() % 10;
+		printf("Random IO\n");
 	}
 
 	if (RunningProcess->CPURemaningTime <= 0)
