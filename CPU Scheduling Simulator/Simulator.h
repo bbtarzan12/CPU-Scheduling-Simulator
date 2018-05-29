@@ -1,4 +1,4 @@
-#include "Process.h"
+﻿#include "Process.h"
 
 enum AlgorithmTypeEnum { FCFS, SJF, P, RR } typedef AlgorithmType;
 

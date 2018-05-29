@@ -1,5 +1,6 @@
 #include "Process.h"
 
+// í”„ë¡œì„¸ìŠ¤ ìƒì„±ì„ ìœ„í•œ í•¨ìˆ˜
 ProcessPtr NewProcess(int id, int cbt, int at, int p)
 {
 	ProcessPtr process = (ProcessPtr) malloc(sizeof(Process));
@@ -14,6 +15,7 @@ ProcessPtr NewProcess(int id, int cbt, int at, int p)
 	return process;
 }
 
+// íì— í”„ë¡œì„¸ìŠ¤ë¥¼ ë„£ëŠ” í•¨ìˆ˜
 void InsertProcess(NodePtr* head, ProcessPtr process)
 {
 	NodePtr NewNode = (NodePtr)malloc(sizeof(Node));
@@ -35,6 +37,7 @@ void InsertProcess(NodePtr* head, ProcessPtr process)
 	Temp->Next = NewNode;
 }
 
+// ê°„íŠ¸ì°¨íŠ¸ ê·¸ë¦¬ëŠ” í•¨ìˆ˜
 void DrawVerticalGanttChart(NodePtr head)
 {
 	NodePtr temp = head;
@@ -47,42 +50,43 @@ void DrawVerticalGanttChart(NodePtr head)
 		{
 			if (prev == -1)
 			{
-				printf("¦£¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¤ 0\n");
+				printf("â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â” 0\n");
 			}
 			else
 			{
-				printf("¦§¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦© %d\n", time);
+				printf("â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”¤ %d\n", time);
 			}
 
 			if (temp->Process == NULL)
 			{
-				printf("¦¢  IDLE  ¦¢\n");
+				printf("â”‚  IDLE  â”‚\n");
 			}
 			else
 			{
-				printf("¦¢  %3d   ¦¢\n", temp->Process->ID);
+				printf("â”‚  %3d   â”‚\n", temp->Process->ID);
 			}
 		}
 		else
 		{
-			printf("¦¢        ¦¢\n");
+			printf("â”‚        â”‚\n");
 		}
 		time++;
 		prev = temp->Process;
 		temp = temp->Next;
 	}
-	printf("¦¦¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¥ %d\n", time);
+	printf("â””â”€â”€â”€â”€â”€â”€â”€â”€â”˜ %d\n", time);
 }
 
+// ëª¨ë“  í”„ë¡œì„¸ìŠ¤ë“¤ì˜ Waiting Timeê³¼ Trunaround Time ì¶œë ¥ê³¼ Average ì •ë³´ë„ ì¶œë ¥
 void DrawNodeInformation(NodePtr head)
 {
 	NodePtr Temp = head;
 	int count = 0;
 	float AverageWaitingTime = 0;
 	float AverageTurnaroundTime = 0;
-	printf("¦£¦¡¦¡¦¡¦¡¦¡¦¨¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¨¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¤\n");
-	printf("¦¢ I D ¦¢ Waiting Time ¦¢ Trunaround Time ¦¢\n");
-	printf("¦§¦¡¦¡¦¡¦¡¦¡¦«¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦«¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦©\n");
+	printf("â”Œâ”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”\n");
+	printf("â”‚ I D â”‚ Waiting Time â”‚ Trunaround Time â”‚\n");
+	printf("â”œâ”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤\n");
 	while (Temp != NULL)
 	{
 		ProcessPtr process = Temp->Process;
@@ -94,29 +98,30 @@ void DrawNodeInformation(NodePtr head)
 		AverageWaitingTime += process->WaitingTime;
 		AverageTurnaroundTime += process->TurnaroundTime;
 		count++;
-		printf("¦¢%5d¦¢%14d¦¢%17d¦¢\n", process->ID, process->WaitingTime, process->TurnaroundTime);
+		printf("â”‚%5dâ”‚%14dâ”‚%17dâ”‚\n", process->ID, process->WaitingTime, process->TurnaroundTime);
 		Temp = Temp->Next;
 		if (Temp != NULL)
-			printf("¦§¦¡¦¡¦¡¦¡¦¡¦«¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦©¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦©\n");
+			printf("â”œâ”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤\n");
 	}
-	printf("¦¦¦¡¦¡¦¡¦¡¦¡¦ª¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦ª¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¥\n");
+	printf("â””â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜\n");
 
 	AverageWaitingTime = AverageWaitingTime / count;
 	AverageTurnaroundTime = AverageTurnaroundTime / count;
 
-	printf("¦£¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¨¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¤\n");
-	printf("¦¢ Average Waiting Time ¦¢ Average Trunaround Time ¦¢\n");
-	printf("¦§¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦«¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦©\n");
-	printf("¦¢%22.1f¦¢%25.1f¦¢\n", AverageWaitingTime, AverageTurnaroundTime);
-	printf("¦¦¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦ª¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¥\n");
+	printf("â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”\n");
+	printf("â”‚ Average Waiting Time â”‚ Average Trunaround Time â”‚\n");
+	printf("â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤\n");
+	printf("â”‚%22.1fâ”‚%25.1fâ”‚\n", AverageWaitingTime, AverageTurnaroundTime);
+	printf("â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜\n");
 }
 
+// ë””ë²„ê·¸ë¥¼ìœ„í•´ íì˜ ëª¨ë“  í”„ë¡œì„¸ìŠ¤ ì •ë³´ë¥¼ ì¶œë ¥
 void DebugNode(NodePtr head)
 {
 	NodePtr Temp = head;
-	printf("¦£¦¡¦¡¦¡¦¡¦¡¦¨¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¨¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¨¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¨¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¨¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¨¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¤\n");
-	printf("¦¢ I D ¦¢ Arival Time ¦¢ CPU Burst Time ¦¢ IO Burst Time ¦¢ Priority ¦¢ Waiting Time ¦¢ Trunaround Time ¦¢\n");
-	printf("¦§¦¡¦¡¦¡¦¡¦¡¦«¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦«¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦«¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦«¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦«¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦©¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦©\n");
+	printf("â”Œâ”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”\n");
+	printf("â”‚ I D â”‚ Arival Time â”‚ CPU Burst Time â”‚ IO Burst Time â”‚ Priority â”‚ Waiting Time â”‚ Trunaround Time â”‚\n");
+	printf("â”œâ”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤\n");
 	while (Temp != NULL)
 	{
 		ProcessPtr process = Temp->Process;
@@ -126,25 +131,27 @@ void DebugNode(NodePtr head)
 			Temp = Temp->Next;
 			continue;
 		}
-		printf("¦¢%5d¦¢%13d¦¢%16d¦¢%15d¦¢%10d¦¢%14d¦¢%17d¦¢\n", process->ID, process->ArrivalTime, process->CPUBurstTime, process->IOBurstTime, process->Priority, process->WaitingTime, process->TurnaroundTime);
+		printf("â”‚%5dâ”‚%13dâ”‚%16dâ”‚%15dâ”‚%10dâ”‚%14dâ”‚%17dâ”‚\n", process->ID, process->ArrivalTime, process->CPUBurstTime, process->IOBurstTime, process->Priority, process->WaitingTime, process->TurnaroundTime);
 		Temp = Temp->Next;
 		if(Temp != NULL)
-			printf("¦§¦¡¦¡¦¡¦¡¦¡¦«¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦«¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦«¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦«¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦«¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦©¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦©\n");
+			printf("â”œâ”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤\n");
 	}
-	printf("¦¦¦¡¦¡¦¡¦¡¦¡¦ª¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦ª¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦ª¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦ª¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦ª¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦ª¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¥\n");
+	printf("â””â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜\n");
 }
 
+// ë””ë²„ê·¸ë¥¼ ìœ„í•´ í”„ë¡œì„¸ìŠ¤ì˜ ì •ë³´ë¥¼ ì¶œë ¥
 void DebugProcess(ProcessPtr process)
 {
 	if (process == NULL)
 		return;
-	printf("¦£¦¡¦¡¦¡¦¡¦¡¦¨¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¨¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¨¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¨¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¨¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¤\n");
-	printf("¦¢ I D ¦¢ Arival Time ¦¢ CPU Burst Time ¦¢ Priority ¦¢ Waiting Time ¦¢ Trunaround Time ¦¢\n");
-	printf("¦§¦¡¦¡¦¡¦¡¦¡¦«¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦«¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦«¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦«¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦©¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦©\n");
-	printf("¦¢%5d¦¢%13d¦¢%16d¦¢%10d¦¢%14d¦¢%17d¦¢\n", process->ID, process->ArrivalTime, process->CPUBurstTime, process->Priority, process->WaitingTime, process->TurnaroundTime);
-	printf("¦¦¦¡¦¡¦¡¦¡¦¡¦ª¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦ª¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦ª¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦ª¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦ª¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¥\n");
+	printf("â”Œâ”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”\n");
+	printf("â”‚ I D â”‚ Arival Time â”‚ CPU Burst Time â”‚ Priority â”‚ Waiting Time â”‚ Trunaround Time â”‚\n");
+	printf("â”œâ”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤\n");
+	printf("â”‚%5dâ”‚%13dâ”‚%16dâ”‚%10dâ”‚%14dâ”‚%17dâ”‚\n", process->ID, process->ArrivalTime, process->CPUBurstTime, process->Priority, process->WaitingTime, process->TurnaroundTime);
+	printf("â””â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜\n");
 }
 
+// íì—ì„œ í”„ë¡œì„¸ìŠ¤ë¥¼ ì‚­ì œí•˜ëŠ” í•¨ìˆ˜
 void DeleteProcess(NodePtr* head, ProcessPtr process)
 {
 	NodePtr Temp = *head;
@@ -182,12 +189,14 @@ void DeleteProcess(NodePtr* head, ProcessPtr process)
 	PrintWarning("Can not find the process");
 }
 
+// from íì—ì„œ to íë¡œ processë¥¼ ì´ë™ì‹œí‚¤ëŠ” í•¨ìˆ˜
 void MoveProcess(NodePtr* from, NodePtr* to, ProcessPtr process)
 {
 	DeleteProcess(from, process);
 	InsertProcess(to, process);
 }
 
+// íì˜ í”„ë¡œì„¸ìŠ¤ ìˆ˜ë¥¼ ê³„ì‚°í•˜ëŠ” í•¨ìˆ˜
 int GetNodeLength(NodePtr head)
 {
 	if (head == NULL)
@@ -196,6 +205,7 @@ int GetNodeLength(NodePtr head)
 	return 1 + GetNodeLength(head->Next);
 }
 
+// ë„ì°©ì‹œê°„ì´ë‚˜ ìš°ì„ ìˆœìœ„ì— ë”°ë¼ í”„ë¡œì„¸ìŠ¤ë¥¼ ì°¾ì•„ ê°€ì ¸ì˜¤ëŠ” í•¨ìˆ˜
 ProcessPtr GetProcess(NodePtr head, GetProcessType type, int time)
 {
 	ProcessPtr (*Func) (NodePtr, ProcessPtr, int);
@@ -214,7 +224,7 @@ ProcessPtr GetProcess(NodePtr head, GetProcessType type, int time)
 	return Func(head, NULL, time);
 }
 
-
+// ë„ì°©ì‹œê°„ì— ë”°ë¼ í”„ë¡œì„¸ìŠ¤ë¥¼ ê°€ì ¸ì˜¤ëŠ” í•¨ìˆ˜
 ProcessPtr GetProcessByArrivalTime(NodePtr head, ProcessPtr process, int time)
 {
 	if (head == NULL)
@@ -235,6 +245,7 @@ ProcessPtr GetProcessByArrivalTime(NodePtr head, ProcessPtr process, int time)
 	return GetProcessByArrivalTime(head->Next, process, time);
 }
 
+// ìš°ì„ ìˆœìœ„ì— ë”°ë¼ í”„ë¡œì„¸ìŠ¤ë¥¼ ê°€ì ¸ì˜¤ëŠ” í•¨ìˆ˜
 ProcessPtr GetProcessByPriority(NodePtr head, ProcessPtr process, int time)
 {
 	if (head == NULL)
